@@ -1,0 +1,44 @@
+:host {
+    display: block;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 48px;
+    box-sizing: border-box;
+    flex-direction: column;
+
+}
+
+.p-menubar {
+    border: 0 !important;
+}
+
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+    gap: 5px;
+
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    i {
+        font-size: 32px;
+        color: #FF1654;
+    }
+}

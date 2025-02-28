@@ -1,0 +1,65 @@
+:host {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        font-weight: 500;
+        color: #4a4a4a;
+        font-size: 14px;
+    }
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.5rem;
+}
+
+.col-12 {
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.md\:col-6 {
+    width: calc(50% - 1rem);
+}
+
+.error-message {
+    color: #ff4444;
+    font-size: 0.875rem;
+    margin-top: 4px;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    :host {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    .field {
+        margin-bottom: 1rem;
+    }
+
+    .md\:col-6 {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    :host ::ng-deep {
+        .p-toast {
+            .p-toast-message {
+                width: 90vw;
+                margin: 0 auto;
+            }
+        }
+    }
+}

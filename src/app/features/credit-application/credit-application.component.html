@@ -1,0 +1,64 @@
+<p-toast position="top-center"></p-toast>
+
+<div class="container mt-5">
+  <p-card header="Kredi Başvuru Formu">
+    <form [formGroup]="creditForm" (ngSubmit)="onSubmit()">
+      <div class="grid">
+        <div *ngFor="let field of formFields" [class]="field.class">
+          <div class="field">
+            <label [for]="field.name">{{ field.label }}</label>
+            
+            <input 
+              *ngIf="field.type === 'text' || field.type === 'phone' || field.type === 'identityNumber'"
+              [id]="field.name"
+              type="text"
+              pInputText
+              [formControlName]="field.name"
+              [placeholder]="field.placeholder || ''"
+              [attr.maxlength]="field.type === 'identityNumber' ? 11 : null"
+            >
+
+            <p-inputNumber 
+              *ngIf="field.type === 'currency'"
+              [id]="field.name"
+              [formControlName]="field.name"
+              mode="currency"
+              currency="TRY"
+              locale="tr-TR"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+       
+            >
+            </p-inputNumber>
+
+            <div *ngIf="field.type === 'dropdown'" class="field">
+              <p-dropdown
+                [id]="field.name"
+                [formControlName]="field.name"
+                [options]="creditTypeOptions"
+                optionLabel="label" 
+                optionValue="value"
+                placeholder="Kredi türü seçin"
+            
+              ></p-dropdown>
+            </div>
+
+            <small class="error-message" *ngIf="creditForm.get(field.name)?.touched && creditForm.get(field.name)?.errors">
+              {{ getErrorMessage(field.name) }}
+            </small>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <p-button 
+            type="submit" 
+            label="Başvuru Yap"
+            [disabled]="!creditForm.valid"
+            size="small"
+            severity="danger"
+          />
+        </div>
+      </div>
+    </form>
+  </p-card>
+</div> 

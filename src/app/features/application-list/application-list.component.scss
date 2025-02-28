@@ -1,0 +1,203 @@
+.filter-section {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    & .filter-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+
+
+        & .input-number-container {
+            display: flex;
+            gap: 12px;
+        }
+
+    }
+}
+
+/* Ana konteyner */
+.application-list-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Başlık ve filtre alanı */
+.header-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+}
+
+/* Filtre alanları */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-item {
+    flex: 1;
+    min-width: 180px;
+}
+
+/* Durum rozeti */
+.status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    &.status-approved {
+        background-color: #C8E6C9;
+        color: #256029;
+    }
+
+    &.status-rejected {
+        background-color: #FFCDD2;
+        color: #C63737;
+    }
+
+    &.status-pending {
+        background-color: #FEEDAF;
+        color: #8A5340;
+    }
+}
+
+/* Açılabilir detay alanı */
+.application-details {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+
+    h4 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: var(--text-color-secondary);
+        font-weight: 600;
+    }
+}
+
+.detail-section {
+    margin-bottom: 1.25rem;
+}
+
+.detail-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    font-size: 0.9rem;
+}
+
+/* Boş durum gösterimi */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--surface-500);
+        margin-bottom: 1rem;
+    }
+
+    h3 {
+        color: var(--text-color-secondary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: var(--text-color-secondary);
+        margin-bottom: 1.5rem;
+        max-width: 400px;
+    }
+
+    button {
+        font-weight: 500;
+    }
+}
+
+/* Metin hizalama yardımcıları */
+.text-center {
+    text-align: center;
+}
+
+/* PrimeFlex grid sistemi yoksa bu sınıfları ekleyelim */
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+    margin-top: -0.5rem;
+}
+
+.col-12 {
+    flex: 0 0 100%;
+    padding: 0.5rem;
+}
+
+@media screen and (min-width: 768px) {
+    .md\:col-6 {
+        flex: 0 0 50%;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .lg\:col-4 {
+        flex: 0 0 33.3333%;
+    }
+}
+
+.p-3 {
+    padding: 1rem;
+}
+
+:host ::ng-deep {
+    .p-treetable {
+        .p-treetable-thead>tr>th {
+            background-color: #f8f9fa;
+        }
+
+        .p-treetable-toggler {
+            margin-right: 0.5rem;
+        }
+    }
+}

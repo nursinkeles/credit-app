@@ -1,0 +1,93 @@
+.header-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Konteyner stili */
+.pivot-report-container {
+    padding: 1rem;
+}
+
+/* Detay gösterimi için stiller */
+.application-detail-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.detail-item {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 200px;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #495057;
+    margin-right: 0.5rem;
+}
+
+.detail-value {
+    color: #212529;
+}
+
+/* Yükleniyor göstergesi için stil */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+
+    span {
+        margin-top: 1rem;
+        color: #666;
+    }
+}
+
+/* Boş durum gösterimi */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    color: #ced4da;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+.empty-state p {
+    color: #6c757d;
+    max-width: 400px;
+}
+
+/* Mobil cihazlar için responsive düzenleme */
+@media screen and (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+}

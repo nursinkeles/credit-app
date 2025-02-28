@@ -1,0 +1,54 @@
+<div class="pivot-report-container">
+  <p-card>
+    <div class="header-container">
+      <p-selectButton [options]="groupByOptions" [(ngModel)]="selectedGroupBy" optionLabel="label" optionValue="value" (onChange)="onGroupByChange()"></p-selectButton>
+      <button pButton icon="pi pi-download" label="Excel'e Aktar" class="p-button-success" [disabled]="!hasData()"></button>
+    </div>
+    
+    <!-- Veri varsa tabloyu göster -->
+    <div *ngIf="hasData(); else emptyState">
+      <p-table [value]="pivotData" [tableStyle]="{'min-width': '50rem'}" [rowsPerPageOptions]="[5, 10, 25, 50]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Grup</th>
+            <th>Başvuru Sayısı</th>
+            <th>Onaylanan</th>
+            <th>Reddedilen</th>
+            <th>Bekleyen</th>
+            <th>Onay Oranı</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.group || '-' }}</td>
+            <td>{{ item.totalApplications || 0 }}</td>
+            <td>{{ item.approved || 0 }}</td>
+            <td>{{ item.rejected || 0 }}</td>
+            <td>{{ item.pending || 0 }}</td>
+            <td>{{ getApprovalRate(item) }}%</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td>Toplam</td>
+            <td>{{ calculateTotals().totalApplications }}</td>
+            <td>{{ calculateTotals().approved }}</td>
+            <td>{{ calculateTotals().rejected }}</td>
+            <td>{{ calculateTotals().pending }}</td>
+            <td>{{ getApprovalRate(calculateTotals()) }}%</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    
+    <!-- Veri yoksa boş durumu göster -->
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="pi pi-chart-bar empty-icon"></i>
+        <h3>Rapor Verisi Bulunmuyor</h3>
+        <p>Henüz raporlanacak veri bulunmuyor. Lütfen kredi başvurusu ekledikten sonra tekrar deneyin.</p>
+      </div>
+    </ng-template>
+  </p-card>
+</div>
+
