@@ -1,90 +1,82 @@
 <div class="application-list-container">
   <p-card>
     <div class="filter-section">
-        <div class="filter-item">
-            <label for="status">Başvuru Durumu</label>
-            <p-dropdown
-              id="status"
-              [options]="statusOptions"
-              [(ngModel)]="filter.status"
-              placeholder="Durum Seçin"
-              [showClear]="true"
-              (onChange)="onFilterChange()"
-            ></p-dropdown>
-          </div>
-          
-            <div class="filter-item">
-              <label for="dateRange">Tarih Aralığı</label>
-            <p-calendar
-              id="dateRange"
-              [(ngModel)]="filter.dateRange"
-              selectionMode="range"
-              [readonlyInput]="true"
-              [maxDate]="today"
-              [showButtonBar]="true"
-              placeholder="Tarih Aralığı Seçin"
-              (onSelect)="onFilterChange()"
-              (onClear)="onFilterChange()"
-            ></p-calendar>
-           </div>
-         
-          
-          
-           <div class="filter-item">
-              <label for="minAmount">Min Tutar</label>
-              <p-inputNumber
-                id="minAmount"
-                [(ngModel)]="filter.minAmount"
-                mode="currency"
-                currency="TRY"
-                locale="tr-TR"
-                [minFractionDigits]="0"
-                placeholder="Min Tutar"
-                (onBlur)="onFilterChange()"
-              ></p-inputNumber>
-           </div>
-     
-          
-        
-           <div class="filter-item">
-              <label for="maxAmount">Max Tutar</label>
-              <p-inputNumber
-                id="maxAmount"
-                [(ngModel)]="filter.maxAmount"
-                mode="currency"
-                currency="TRY"
-                locale="tr-TR"
-                [minFractionDigits]="0"
-                placeholder="Max Tutar"
-                (onBlur)="onFilterChange()"
-              ></p-inputNumber>
-           </div>
+      <div class="filter-item">
+        <label for="status">Başvuru Durumu</label>
+        <p-dropdown
+          id="status"
+          [options]="statusOptions"
+          [(ngModel)]="filter.status"
+          placeholder="Durum Seçin"
+          [showClear]="true"
+          (onChange)="onFilterChange()"
+        ></p-dropdown>
+      </div>
 
-             
-        <div class="filter-item">
-            <label>&nbsp;</label>
-            <button 
-              pButton 
-              label="Filtreleri Temizle" 
-              icon="pi pi-filter-slash"
-              class="p-button-outlined p-button-sm"
-              (click)="resetFilters()"
-              [disabled]="!hasFilter()"
-            ></button>
-          </div>
+      <div class="filter-item">
+        <label for="dateRange">Tarih Aralığı</label>
+        <p-calendar
+          id="dateRange"
+          [(ngModel)]="filter.dateRange"
+          selectionMode="range"
+          [readonlyInput]="true"
+          [maxDate]="today"
+          [showButtonBar]="true"
+          placeholder="Tarih Aralığı Seçin"
+          (onSelect)="onFilterChange()"
+          (onClear)="onFilterChange()"
+        ></p-calendar>
+      </div>
+
+      <div class="filter-item">
+        <label for="minAmount">Min Tutar</label>
+        <p-inputNumber
+          id="minAmount"
+          [(ngModel)]="filter.minAmount"
+          mode="currency"
+          currency="TRY"
+          locale="tr-TR"
+          [minFractionDigits]="0"
+          placeholder="Min Tutar"
+          (onBlur)="onFilterChange()"
+        ></p-inputNumber>
+      </div>
+
+      <div class="filter-item">
+        <label for="maxAmount">Max Tutar</label>
+        <p-inputNumber
+          id="maxAmount"
+          [(ngModel)]="filter.maxAmount"
+          mode="currency"
+          currency="TRY"
+          locale="tr-TR"
+          [minFractionDigits]="0"
+          placeholder="Max Tutar"
+          (onBlur)="onFilterChange()"
+        ></p-inputNumber>
+      </div>
+
+      <div class="filter-item">
+        <label>&nbsp;</label>
+        <button
+          pButton
+          label="Filtreleri Temizle"
+          icon="pi pi-filter-slash"
+          class="p-button-outlined p-button-sm"
+          (click)="resetFilters()"
+          [disabled]="!hasFilter()"
+        ></button>
+      </div>
     </div>
-    
-      
-    
 
-
-
-
-
-    
-    <p-treeTable [value]="applications" [paginator]="true" [rows]="10" 
-                 [scrollable]="true" [tableStyle]="{'min-width':'50rem'}"
-                 styleClass="p-treetable-sm p-treetable-striped">
+    <p-treeTable
+      [value]="filteredApplications"
+      [paginator]="true"
+      [rows]="10"
+      [scrollable]="true"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      styleClass="p-treetable-sm p-treetable-striped"
+    >
       <ng-template pTemplate="header">
         <tr>
           <th>Başvuru Tarihi</th>
@@ -94,54 +86,70 @@
           <th>Durum</th>
         </tr>
       </ng-template>
-      
       <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
         <tr [ttRow]="rowNode">
-          <td *ngIf="!rowData.category">
+          <td *ngIf="!rowData.isDetail">
             <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-            {{ rowData.applicationDate | date:'dd/MM/yyyy' }}
+            {{ rowData.applicationDate | date : "dd/MM/yyyy" }}
           </td>
-          <td colspan="5" *ngIf="rowData.category">
-            <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
-            <p-table [value]="rowData.details" 
-                    styleClass="p-datatable-sm">
-              <ng-template pTemplate="header">
-              </ng-template>
-              <ng-template pTemplate="body" let-detail>
-                <tr>
-                  <td style="width: 150px; font-weight: 600;">{{ detail.label }}</td>
-                  <td>{{ detail.value }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
+          <td *ngIf="!rowData.isDetail">{{ rowData.fullName }}</td>
+          <td *ngIf="!rowData.isDetail">
+            {{ getCreditTypeLabel(rowData.creditType) }}
           </td>
-          <td *ngIf="!rowData.category">{{ rowData.fullName }}</td>
-          <td *ngIf="!rowData.category">{{ rowData.creditType }}</td>
-          <td *ngIf="!rowData.category">{{ rowData.creditAmount }}</td>
-          <td *ngIf="!rowData.category">
-            <span [class]="'status-badge ' + getStatusClass(rowData.status)">
+          <td *ngIf="!rowData.isDetail">
+            {{ rowData.creditAmount | number : "1.0-0" }} ₺
+          </td>
+          <td *ngIf="!rowData.isDetail">
+            <span
+              class="status-badge"
+              [ngClass]="getStatusClass(rowData.status)"
+            >
               {{ getStatusLabel(rowData.status) }}
             </span>
+          </td>
+
+          <td colspan="5" *ngIf="rowData.isDetail">
+            <div class="application-detail-row p-3">
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-4">
+                  <div class="detail-item">
+                    <span class="detail-label">Başvuru Numarası:</span>
+                    <span class="detail-value">{{ rowData.rawData.id }}</span>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4">
+                  <div class="detail-item">
+                    <span class="detail-label">TC Kimlik No:</span>
+                    <span class="detail-value">{{
+                      rowData.rawData.identityNumber
+                    }}</span>
+                  </div>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4">
+                  <div class="detail-item">
+                    <span class="detail-label">Telefon:</span>
+                    <span class="detail-value">{{
+                      rowData.rawData.phone
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="5" class="text-center">
+          <td colspan="5">
             <div class="empty-state">
-              <i class="pi pi-search empty-icon"></i>
+              <i class="pi pi-folder-open empty-icon"></i>
               <h3>Başvuru Bulunamadı</h3>
-              <p>Aradığınız kriterlere uygun başvuru bulunamadı.</p>
-              <button pButton label="Filtreleri Temizle" 
-                      icon="pi pi-filter-slash" 
-                      (click)="resetFilters()" 
-                      [disabled]="!hasFilter()">
-              </button>
+              <p>Henüz hiç kredi başvurusu yapılmamış.</p>
             </div>
           </td>
         </tr>
       </ng-template>
     </p-treeTable>
   </p-card>
-</div> 
+</div>

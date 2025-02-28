@@ -22,20 +22,7 @@ export interface CreditStateModel {
 export class CreditState {
   @Selector()
   static getApplications(state: CreditStateModel) {
-    // Tip dönüşümü yaparak uygulamalar döndür
-    return state.applications.map((app) => ({
-      id: app.id,
-      firstName: app.firstName,
-      lastName: app.lastName,
-      applicationDate: app.applicationDate,
-      creditType: app.creditType,
-      creditAmount: app.creditAmount,
-      status: app.status,
-      identityNumber: app.identityNumber,
-      phone: app.phone,
-      phoneNumber: app.phone,
-      income: app.income,
-    }));
+    return state.applications;
   }
 
   @Selector()
@@ -51,15 +38,8 @@ export class CreditState {
     const state = ctx.getState();
     const application = action.payload;
 
-    // Hata ayıklama için loglama ekliyoruz
-    console.log('Income:', application.income);
-    console.log('Credit Amount:', application.creditAmount);
-    console.log('5x Credit Amount:', application.creditAmount * 5);
-
-    // Kredi başvuru durumunu belirle
     let status: 'PENDING' | 'APPROVED' | 'REJECTED';
 
-    // Karşılaştırma için sayıları doğru şekilde işle
     const income = Number(application.income);
     const creditLimit = Number(application.creditAmount) * 5;
 
@@ -71,9 +51,6 @@ export class CreditState {
       status = 'REJECTED';
     }
 
-    console.log('Calculated Status:', status);
-
-    // Başvuru verilerine ID ve durum ekle
     const newApplication: CreditApplication = {
       ...application,
       id: this.generateId(),

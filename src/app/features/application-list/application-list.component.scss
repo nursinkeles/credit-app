@@ -18,11 +18,9 @@
             display: flex;
             gap: 12px;
         }
-
     }
 }
 
-/* Ana konteyner */
 .application-list-container {
     width: 100%;
     max-width: 1200px;
@@ -30,7 +28,6 @@
     padding: 1rem;
 }
 
-/* Başlık ve filtre alanı */
 .header-container {
     display: flex;
     flex-direction: column;
@@ -44,7 +41,6 @@
     }
 }
 
-/* Filtre alanları */
 .filter-container {
     display: flex;
     flex-wrap: wrap;
@@ -57,7 +53,6 @@
     min-width: 180px;
 }
 
-/* Durum rozeti */
 .status-badge {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
@@ -65,22 +60,21 @@
     font-weight: 500;
 
     &.status-approved {
-        background-color: #C8E6C9;
-        color: #256029;
+        background-color: #d4edda;
+        color: #155724;
     }
 
     &.status-rejected {
-        background-color: #FFCDD2;
-        color: #C63737;
+        background-color: #f8d7da;
+        color: #721c24;
     }
 
     &.status-pending {
-        background-color: #FEEDAF;
-        color: #8A5340;
+        background-color: #fff3cd;
+        color: #856404;
     }
 }
 
-/* Açılabilir detay alanı */
 .application-details {
     padding: 1rem;
     background-color: #f8f9fa;
@@ -123,7 +117,6 @@
     font-size: 0.9rem;
 }
 
-/* Boş durum gösterimi */
 .empty-state {
     display: flex;
     flex-direction: column;
@@ -155,12 +148,10 @@
     }
 }
 
-/* Metin hizalama yardımcıları */
 .text-center {
     text-align: center;
 }
 
-/* PrimeFlex grid sistemi yoksa bu sınıfları ekleyelim */
 .grid {
     display: flex;
     flex-wrap: wrap;
@@ -200,4 +191,29 @@
             margin-right: 0.5rem;
         }
     }
+}
+
+.application-detail-row {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+
+    .detail-item {
+        padding: 0.5rem;
+
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+            margin-right: 0.5rem;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            color: #6c757d;
+        }
+    }
+}
+
+.detail-row {
+    background-color: #f8f9fa;
 }

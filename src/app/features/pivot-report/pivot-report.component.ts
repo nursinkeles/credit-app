@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -23,6 +17,8 @@ import {
   tap,
   finalize,
 } from 'rxjs/operators';
+import * as XLSX from 'xlsx';
+import { LabelService } from '../../shared/services/label.service';
 
 @Component({
   selector: 'app-pivot-report',
@@ -59,14 +55,14 @@ export class PivotReportComponent implements OnInit, OnDestroy {
     pending: 0,
   };
 
-  // RxJS Subjectler
   private destroy$ = new Subject<void>();
   private filterChange$ = new BehaviorSubject<string>('creditType');
 
   constructor(
     private store: Store,
     private cdr: ChangeDetectorRef,
-    private currencyPipe: CurrencyPipe
+    private currencyPipe: CurrencyPipe,
+    private labelService: LabelService
   ) {}
 
   ngOnInit(): void {
@@ -120,7 +116,6 @@ export class PivotReportComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap((applications) => {
-          console.log('Ham veriler:', applications);
           this.rawApplications = applications;
           this.generatePivotData();
         }),
@@ -168,8 +163,6 @@ export class PivotReportComponent implements OnInit, OnDestroy {
           this.pivotData = this.groupByMonth(this.rawApplications);
           break;
       }
-
-      console.log('Pivot veriler:', this.pivotData);
       this.calculateTotals();
     } catch (error) {
       console.error('Pivot veri oluşturma hatası:', error);
@@ -321,7 +314,6 @@ export class PivotReportComponent implements OnInit, OnDestroy {
         '1.2-2',
         'tr-TR'
       );
-      console.log(`Formatlanan tutar: ${amount} -> ${formatted}`);
       return formatted || '0,00 ₺';
     } catch (e) {
       console.error('Para birimi formatlanırken hata:', e);
@@ -335,6 +327,38 @@ export class PivotReportComponent implements OnInit, OnDestroy {
   }
 
   hasData(): boolean {
-    return this.pivotData.length > 0;
+    return this.rawApplications && this.rawApplications.length > 0;
+  }
+
+  exportToExcel(): void {
+    if (!this.hasData()) return;
+
+    try {
+      const data = this.rawApplications.map((app) => ({
+        'Başvuru Tarihi': new Date(app.applicationDate).toLocaleDateString(
+          'tr-TR'
+        ),
+        'Ad Soyad': `${app.firstName} ${app.lastName}`,
+        'TC Kimlik No': app.identityNumber,
+        Telefon: app.phone,
+        'Kredi Türü': this.labelService.getCreditTypeLabel(app.creditType),
+        'Kredi Tutarı': new Intl.NumberFormat('tr-TR', {
+          style: 'currency',
+          currency: 'TRY',
+        }).format(app.creditAmount),
+        Durum: this.labelService.getStatusLabel(app.status),
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Başvurular');
+
+      const fileName = `kredi-basvurulari-${
+        new Date().toISOString().split('T')[0]
+      }.xlsx`;
+      XLSX.writeFile(workbook, fileName);
+    } catch (error) {
+      console.error('Excel export hatası:', error);
+    }
   }
 }

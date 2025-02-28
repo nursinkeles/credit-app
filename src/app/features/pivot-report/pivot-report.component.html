@@ -1,13 +1,32 @@
 <div class="pivot-report-container">
   <p-card>
     <div class="header-container">
-      <p-selectButton [options]="groupByOptions" [(ngModel)]="selectedGroupBy" optionLabel="label" optionValue="value" (onChange)="onGroupByChange()"></p-selectButton>
-      <button pButton icon="pi pi-download" label="Excel'e Aktar" class="p-button-success" [disabled]="!hasData()"></button>
+      <p-selectButton
+        [options]="groupByOptions"
+        [(ngModel)]="selectedGroupBy"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="onGroupByChange()"
+      ></p-selectButton>
+      <div class="flex justify-content-end mb-3">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-file-excel"
+          label="Excel'e Aktar"
+          class="p-button-success"
+          (click)="exportToExcel()"
+          [disabled]="!hasData()"
+        ></button>
+      </div>
     </div>
-    
-    <!-- Veri varsa tabloyu göster -->
+
     <div *ngIf="hasData(); else emptyState">
-      <p-table [value]="pivotData" [tableStyle]="{'min-width': '50rem'}" [rowsPerPageOptions]="[5, 10, 25, 50]">
+      <p-table
+        [value]="pivotData"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowsPerPageOptions]="[5, 10, 25, 50]"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th>Grup</th>
@@ -20,7 +39,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-item>
           <tr>
-            <td>{{ item.group || '-' }}</td>
+            <td>{{ item.group || "-" }}</td>
             <td>{{ item.totalApplications || 0 }}</td>
             <td>{{ item.approved || 0 }}</td>
             <td>{{ item.rejected || 0 }}</td>
@@ -40,15 +59,16 @@
         </ng-template>
       </p-table>
     </div>
-    
-    <!-- Veri yoksa boş durumu göster -->
+
     <ng-template #emptyState>
       <div class="empty-state">
         <i class="pi pi-chart-bar empty-icon"></i>
         <h3>Rapor Verisi Bulunmuyor</h3>
-        <p>Henüz raporlanacak veri bulunmuyor. Lütfen kredi başvurusu ekledikten sonra tekrar deneyin.</p>
+        <p>
+          Henüz raporlanacak veri bulunmuyor. Lütfen kredi başvurusu ekledikten
+          sonra tekrar deneyin.
+        </p>
       </div>
     </ng-template>
   </p-card>
 </div>
-

@@ -152,14 +152,8 @@ export class CreditApplicationComponent implements OnInit {
     this.markFormGroupTouched(this.creditForm);
 
     if (this.creditForm.valid) {
-      // Form verilerini state'e gönder
       const formValue = this.creditForm.value;
 
-      console.log('Form değerleri:', formValue);
-
-      // Tüm değerlerin doğru aktarıldığından emin olalım
-
-      console.log('Gönderilen uygulama:', formValue);
       const creditApplication: CreditApplication = {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
@@ -169,13 +163,10 @@ export class CreditApplicationComponent implements OnInit {
         creditAmount: Number(formValue.requestedAmount),
         creditType: formValue.creditType,
         applicationDate: new Date(),
-        status: 'PENDING', // Başlangıç durumu
-        id: '', // Store tarafından doldurulacak
+        status: 'PENDING',
+        id: '',
       };
 
-      console.log('Gönderilen uygulama:', creditApplication);
-
-      // Store'a dispatch et
       const result = this.store
         .dispatch(new AddCreditApplication(creditApplication))
         .subscribe({

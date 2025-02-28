@@ -12,27 +12,21 @@ import { PivotData, GroupByOption } from '../models/pivot-report.model';
 export class PivotReportService {
   constructor(private store: Store) {}
 
-  // Store'dan gerçek verileri al
   getPivotData(groupBy: GroupByOption): Observable<any> {
     return this.store.select(CreditState.getApplications).pipe(
       map((applications: CreditApplication[]) => {
-        // Boş uygulama listesi kontrolü
         if (!applications || applications.length === 0) {
           return [];
         }
 
-        // Uygulamaları pivot veriye dönüştür
         const pivotData = applications.map((app) => this.toPivotData(app));
 
-        // Gruplama işlemini gerçekleştir
         return this.groupData(pivotData, groupBy);
       })
     );
   }
 
-  // CreditApplication'ı PivotData formatına dönüştür
   private toPivotData(app: CreditApplication): PivotData {
-    // Eksik değerler için güvenli dönüşüm
     const income = typeof app.income === 'number' ? app.income : 0;
     const creditAmount =
       typeof app.creditAmount === 'number'
@@ -50,7 +44,6 @@ export class PivotReportService {
     };
   }
 
-  // Gelir değerine göre aralık belirle
   private getIncomeRangeFromValue(income: number): string {
     if (income < 10000) return 'LOW';
     if (income < 25000) return 'MEDIUM';
@@ -58,11 +51,9 @@ export class PivotReportService {
     return 'VERY_HIGH';
   }
 
-  // Verileri gruplama
   private groupData(data: PivotData[], groupBy: GroupByOption) {
     const result: any = {};
 
-    // Öncelikle tüm olası grupları tanımlayalım (krediler için)
     if (groupBy === 'creditType') {
       result['PERSONAL'] = this.createEmptyResultObject('İhtiyaç Kredisi');
       result['VEHICLE'] = this.createEmptyResultObject('Taşıt Kredisi');
@@ -90,7 +81,6 @@ export class PivotReportService {
           break;
       }
 
-      // Güvenli sayısal dönüşüm
       const amount =
         typeof item.creditAmount === 'number'
           ? item.creditAmount
@@ -99,14 +89,12 @@ export class PivotReportService {
       result[key].totalAmount += amount;
     });
 
-    // Grup anahtarları yerine etiketleri kullan
     return Object.keys(result).map((key) => ({
       group: result[key].label || key,
       ...result[key],
     }));
   }
 
-  // Boş sonuç nesnesi oluştur
   private createEmptyResultObject(label: string) {
     return {
       label,
@@ -118,7 +106,6 @@ export class PivotReportService {
     };
   }
 
-  // Grup anahtarı oluştur
   private getGroupKey(item: PivotData, groupBy: GroupByOption): string {
     switch (groupBy) {
       case 'creditType':
@@ -132,7 +119,6 @@ export class PivotReportService {
     }
   }
 
-  // Kredi türü etiketi
   private getCreditTypeLabel(type: string): string {
     const types: { [key: string]: string } = {
       PERSONAL: 'İhtiyaç Kredisi',
@@ -142,7 +128,6 @@ export class PivotReportService {
     return types[type] || 'Diğer';
   }
 
-  // Gelir aralığı etiketi
   private getIncomeRangeLabel(range: string): string {
     const ranges: { [key: string]: string } = {
       LOW: '10.000 TL Altı',
@@ -153,7 +138,6 @@ export class PivotReportService {
     return ranges[range] || 'Belirsiz';
   }
 
-  // Ay etiketi
   private getMonthLabel(date: Date): string {
     if (!date) return 'Bilinmeyen Tarih';
 
